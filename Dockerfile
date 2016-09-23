@@ -18,6 +18,7 @@ MAINTAINER Tuan Vo <vohungtuan@gmail.com>
 ENV GOSU_VERSION 1.9
 
 RUN set -x \
+  && apk --no-cache add openssl \
   && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-amd64"
   && chmod +x /usr/local/bin/gosu \
   && gosu nobody true
