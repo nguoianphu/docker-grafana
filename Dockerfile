@@ -30,6 +30,7 @@ ENV GRAFANA_HOME /opt/grafana
 ENV GRAFANA_PACKAGE grafana-latest.linux-x64.tar.gz
 
 RUN set -x \
+ && mkdir -p /opt/tmp/ \
  && mkdir -p ${GRAFANA_HOME}/ \
  && wget -O /opt/tmp/$GRAFANA_PACKAGE $GRAFANA_URL \
  && tar xfz /opt/tmp/$GRAFANA_PACKAGE --strip-components=1 -C $GRAFANA_HOME \
