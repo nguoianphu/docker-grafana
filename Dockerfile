@@ -19,14 +19,9 @@ ENV GOSU_VERSION 1.9
 ### https://github.com/tianon/gosu/releases
 
 RUN set -x \
-  && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
-  && wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
-  && export GNUPGHOME="$(mktemp -d)" \
-  && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-  && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
-  && rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
+  && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-amd64 \
   && chmod +x /usr/local/bin/gosu \
-&& gosu nobody true
+  && gosu nobody true
  
 ### install Grafana
 
@@ -35,13 +30,10 @@ ENV GRAFANA_HOME /opt/grafana
 ENV GRAFANA_PACKAGE grafana-latest.linux-x64.tar.gz
 
 RUN set -x \
-
-
-RUN set -x \
  && mkdir -p ${GRAFANA_HOME}/ \
  && wget -O /opt/tmp/$GRAFANA_PACKAGE $GRAFANA_URL \
  && tar xfz /opt/tmp/$GRAFANA_PACKAGE --strip-components=1 -C $GRAFANA_HOME \
- && rm /opt/tmp/$GRAFANA_PACKAGE
+ && rm /opt/tmp/$GRAFANA_PACKAGE \
  && addgroup grafana \
  && adduser -D -S grafana -s /bin/bash -h ${GRAFANA_HOME} -g "Grafana service user" -G grafana \
  && mkdir -p /var/log/grafana \
@@ -57,15 +49,16 @@ EXPOSE 3000
 
 VOLUME /var/lib/grafana
 
-
 ENV PATH ${GRAFANA_HOME}/bin:$PATH
 WORKDIR ${GRAFANA_HOME}
 
-COPY assets/docker-entrypoint.sh /usr/local/bin/
+COPY docker-entrypoint.sh /usr/local/bin/
+
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh \
  && ln -s /usr/local/bin/docker-entrypoint.sh /docker-entrypoint.sh
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["grafana-server web"]
+CMD ["grafana-server", "web"]
 
 # Remove tmp
 RUN find /opt/tmp/ -type f | xargs rm -f
