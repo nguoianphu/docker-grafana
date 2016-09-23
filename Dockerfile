@@ -19,7 +19,8 @@ ENV GOSU_VERSION 1.9
 ENV GOSU_URL https://github.com/tianon/gosu/releases/download
 
 RUN set -x \
-  && wget -O /usr/local/bin/gosu "$GOSU_URL/$GOSU_VERSION/gosu-amd64" \
+#  && wget -O /usr/local/bin/gosu "$GOSU_URL/$GOSU_VERSION/gosu-amd64" \
+  curl -L -O /usr/local/bin/gosu "$GOSU_URL/$GOSU_VERSION/gosu-amd64" \
   && chmod +x /usr/local/bin/gosu \
   && gosu nobody true
  
