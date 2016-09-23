@@ -33,6 +33,7 @@ RUN set -x \
  && mkdir -p /opt/tmp/ \
  && mkdir -p ${GRAFANA_HOME}/ \
  && wget -O /opt/tmp/$GRAFANA_PACKAGE $GRAFANA_URL \
+ && apk --no-cache --update add tar \
  && tar xfz /opt/tmp/$GRAFANA_PACKAGE --strip-components=1 -C $GRAFANA_HOME \
  && rm /opt/tmp/$GRAFANA_PACKAGE \
  && addgroup grafana \
