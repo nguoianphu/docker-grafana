@@ -4,7 +4,7 @@ services:
 
 script:
   - docker build -t grafana .
-  - docker run --name grafana -d grafana
+  - docker logs -f $(docker run --name grafana -d grafana)
   - docker ps -a
   - sleep 20
   - docker exec -it grafana ps -ef
