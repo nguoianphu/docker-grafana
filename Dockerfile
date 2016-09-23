@@ -56,14 +56,17 @@ WORKDIR ${GRAFANA_HOME}
 
 COPY docker-entrypoint.sh /usr/local/bin/
 
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh \
+RUN set -x \
+ && chmod +x /usr/local/bin/docker-entrypoint.sh \
  && ln -s /usr/local/bin/docker-entrypoint.sh /docker-entrypoint.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["grafana-server", "web"]
 
 # Remove tmp
-RUN find /opt/tmp/ -type f | xargs rm -f
+RUN find /opt/tmp/ -type f | xargs rm -f \
+ && ls . \
+ && export
 
 # Run with:
 # docker run -p 3000:3000 -d --name grafanaContainer grafana
