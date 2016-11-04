@@ -4,8 +4,18 @@ services:
 
 script:
   - docker build -t grafana .
-  - docker logs -f $(docker run --name grafana -d grafana)
+  - docker images
+  - docker run --name my-grafana -d grafana
   - docker ps -a
+  - docker logs my-grafana
   - sleep 20
   - docker exec -it grafana ps -ef
   - docker exec -it grafana curl http://localhost:3000/
+  - docker stop my-grafana
+  - docker run --name nguoianphu-grafana -d nguoianphu/docker-grafana
+  - docker ps -a
+  - docker images
+  - docker logs nguoianphu-grafana
+  - sleep 20
+  - docker exec -it nguoianphu-grafana ps -ef
+  - docker exec -it nguoianphu-grafana curl http://localhost:3000/
